@@ -4,6 +4,8 @@ import torch.nn.functional as F
 from diffusers.models.normalization import RMSNorm
 from einops import rearrange
 
+from typing import Union
+
 
 class IPAFluxAttnProcessor2_0(nn.Module):
     """Attention processor used typically in processing the SD3-like self-attention projections."""
@@ -28,8 +30,8 @@ class IPAFluxAttnProcessor2_0(nn.Module):
         num_heads,
         query,
         image_emb: torch.FloatTensor,
-        t: torch.FloatTensor|torch.Tensor
-    ) -> torch.FloatTensor|torch.Tensor|None:
+        t: Union[torch.FloatTensor, torch.Tensor]
+    ) -> Union[torch.FloatTensor, torch.Tensor, None]:
         # only apply IPA if timestep is within range
         if self.timestep_range is not None:
             if t[0] > self.timestep_range[0] or t[0] < self.timestep_range[1]:

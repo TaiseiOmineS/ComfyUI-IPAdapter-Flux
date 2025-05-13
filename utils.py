@@ -4,6 +4,8 @@ from .flux.layers import DoubleStreamBlockIPA, SingleStreamBlockIPA
 from comfy.ldm.flux.layers import timestep_embedding
 from types import MethodType
 
+from typing import Optional
+
 def FluxUpdateModules(bi, ip_attn_procs, image_emb, is_patched):
     flux_model = bi.model
     bi.add_object_patch(f"diffusion_model.forward_orig", MethodType(forward_orig_ipa, flux_model.diffusion_model))
@@ -53,7 +55,7 @@ def forward_orig_ipa(
     txt_ids: Tensor,
     timesteps: Tensor,
     y: Tensor,
-    guidance: Tensor|None = None,
+    guidance: Optional[Tensor] = None,
     control=None,
     transformer_options={},
     attn_mask: Tensor = None,
